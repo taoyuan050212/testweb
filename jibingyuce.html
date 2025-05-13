@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疾病预测雷达图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-blue { color: #2196F3; }
+        .bg-blue-light { background-color: #E3F2FD; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold primary-blue mb-4 text-center">📈疾病预测雷达图</h1>
+        <p class="text-gray-700 mb-6 text-center">基于饮食/运动数据预警健康风险</p>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold primary-blue mb-4">数据提交</h2>
+            <form id="healthDataForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">饮食数据：</label>
+                    <textarea rows="3" placeholder="请描述您近期的饮食情况" class="w-full mt-1 border border-blue-300 p-2 rounded-md"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">运动数据：</label>
+                    <textarea rows="3" placeholder="请描述您近期的运动情况" class="w-full mt-1 border border-blue-300 p-2 rounded-md"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary-blue text-white p-2 rounded-md hover:bg-blue-700">提交数据</button>
+            </form>
+    </div>
+    <script>
+        document.getElementById('healthDataForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('数据提交成功，我们将尽快为您分析健康风险。');
+        });
+    </script>
+</body>
+</html>    

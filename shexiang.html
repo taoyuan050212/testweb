@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI姿势评估</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e0f3ff 0%, #f5f5f5 100%);
+        }
+
+        .container {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 12px 24px rgba(0, 123, 255, 0.15);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #007BFF;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: #666;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .camera-box {
+            border: 2px dashed #e0f3ff;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 28px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .start-btn:hover {
+                transform: scale(1.02);
+                box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2);
+            }
+
+        .result-area {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .good-result {
+            color: #2ecc71;
+        }
+
+        .bad-result {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="section-title">🤖 AI姿势评估</h2>
+        <p class="section-desc">
+            通过摄像头智能分析你的站立/坐姿，实时检测骨骼对齐情况
+        </p>
+
+        <div class="camera-box">
+            <p class="section-desc" style="font-size: 1rem; color: #999;">
+                点击按钮开始姿势检测（需允许摄像头权限）
+            </p>
+            <button class="start-btn" id="detectBtn">开始检测姿势</button>
+        </div>
+
+        <div class="result-area" id="resultDisplay"></div>
+    </div>
+
+
+</body>
+</html>

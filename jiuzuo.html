@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>久坐时长与脊椎变化</title>
+    <style>
+        .spine {
+            transition: transform 0.5s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-3xl font-bold mb-4">久坐时长与脊椎变化</h1>
+    <input type="number" id="sedentaryTime" placeholder="输入久坐时长（小时）"
+        class="border border-gray-300 p-2 rounded-md mb-4">
+    <button id="generateChart" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">生成图表</button>
+    <div id="spineChart" class="mt-8">
+        <svg viewBox="0 0 100 200" class="spine">
+            <path d="M50 0 Q50 50 50 100 Q50 150 50 200" stroke="black" stroke-width="2" fill="none" />
+        </svg>
+    </div>
+
+    <script>
+        const generateChartButton = document.getElementById('generateChart');
+        const sedentaryTimeInput = document.getElementById('sedentaryTime');
+        const spineChart = document.getElementById('spineChart');
+
+        generateChartButton.addEventListener('click', () => {
+            const sedentaryTime = parseInt(sedentaryTimeInput.value);
+            if (!isNaN(sedentaryTime)) {
+                const curveFactor = Math.min(sedentaryTime * 10, 50);
+                const path = `M50 0 Q${50 - curveFactor} 50 50 100 Q${50 + curveFactor} 150 50 200`;
+                const svgPath = spineChart.querySelector('path');
+                svgPath.setAttribute('d', path);
+            }
+        });
+    </script>
+</body>
+
+</html>

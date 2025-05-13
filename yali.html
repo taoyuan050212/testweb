@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>压力状态检测</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-green {
+            color: #4CAF50;
+        }
+
+        .bg-primary-light {
+            background-color: #E8F5E9;
+        }
+
+        .border-green {
+            border-color: #C8E6C9;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold primary-green mb-4 text-center">
+            🌱 心理压力状态检测
+        </h1>
+        <p class="text-gray-700 mb-6 text-center">
+            通过日常数据快速评估当前压力状态，获取专属建议
+        </p>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <form id="stressForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        今日主要任务（选填）
+                    </label>
+                    <input type="text"
+                           placeholder="例如：课程作业/社团活动/考试复习"
+                           class="w-full px-3 py-2 border border-green rounded-md focus:outline-none focus:ring-2 focus:ring-primary-green">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        近期情绪关键词（选填）
+                    </label>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-primary-light text-primary-green rounded-md hover:bg-green-200"
+                                onclick="addKeyword(this)">
+                            焦虑
+                        </button>
+                        <button class="px-3 py-1 bg-primary-light text-primary-green rounded-md hover:bg-green-200"
+                                onclick="addKeyword(this)">
+                            疲惫
+                        </button>
+                        <button class="px-3 py-1 bg-primary-light text-primary-green rounded-md hover:bg-green-200"
+                                onclick="addKeyword(this)">
+                            烦躁
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="w-full bg-primary-green text-white py-2 px-4 rounded-md hover:bg-green-700 focus:shadow-outline"
+                        onclick="generateReport()">
+                    生成压力状态报告
+                </button>
+            </form>
+        </div>
+
+        <div id="resultModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <h3 class="text-xl font-bold primary-green mb-4 flex items-center">
+                    压力状态：<span id="stressLevel" class="ml-2"></span>
+                </h3>
+                <p class="text-gray-700 mb-4" id="stressSuggestion">
+                    （生成报告后显示具体建议）
+                </p>
+                <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md float-right"
+                        onclick="closeModal()">
+                    关闭
+                </button>
+            </div>
+        </div>
+        </a>
+    </div>
+
+    <script>
+        function generateReport() {
+            const levels = ['轻松', '中等', '预警'];
+            const level = levels[Math.floor(Math.random() * levels.length)];
+            const suggestion = level === '轻松' ?
+                '保持当前状态，继续加油！' :
+                level === '中等' ?
+                    '注意劳逸结合，适当休息哦～' :
+                    '压力较高，建议进行放松训练或寻求帮助';
+
+            document.getElementById('stressLevel').textContent = level;
+            document.getElementById('stressSuggestion').textContent = suggestion;
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+
+        function addKeyword(btn) {
+            const input = document.querySelector('input[type="text"]:nth-child(2)');
+            input.value += input.value ? `, ${btn.textContent}` : btn.textContent;
+        }
+    </script>
+</body>
+</html>

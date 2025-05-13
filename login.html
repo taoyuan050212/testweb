@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 - 大学生健康管家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#50aed7',
+                        secondary: '#3a92b8',
+                        neutral: '#f8fafc',
+                        dark: '#334155',
+                        light: '#f1f5f9',
+                        success: '#10b981',
+                        error: '#ef4444',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 自定义动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        /* 自定义工具类样式 */
+        .form-input-focus {
+            border-color: #9bd2ea;
+            box-shadow: 0 0 0 2px rgba(80, 174, 215, 0.2);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .password-strength-0 {
+            width: 0%;
+            background-color: #e5e7eb;
+        }
+        
+        .password-strength-1 {
+            width: 25%;
+            background-color: #ef4444;
+        }
+        
+        .password-strength-2 {
+            width: 50%;
+            background-color: #eab308;
+        }
+        
+        .password-strength-3 {
+            width: 75%;
+            background-color: #a6c1ec;
+        }
+        
+        .password-strength-4 {
+            width: 100%;
+            background-color: #10b981;
+        }
+        
+        .border-error {
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-light to-neutral min-h-screen font-inter text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-primary text-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight">
+                <i class="fa fa-heartbeat mr-2"></i>大学生健康管家
+            </h1>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-light transition-colors duration-200">首页</a>
+                <a href="#" class="hover:text-light transition-colors duration-200">健康资讯</a>
+                <a href="#" class="hover:text-light transition-colors duration-200">关于我们</a>
+                <a href="#" class="hover:text-light transition-colors duration-200">联系我们</a>
+            </nav>
+            <button class="md:hidden text-2xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-16 flex justify-center items-center min-h-[80vh]">
+        <!-- 登录卡片 -->
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-500 hover:shadow-2xl">
+            <!-- 卡片顶部装饰条 -->
+            <div class="h-2 bg-gradient-to-r from-primary to-secondary"></div>
+            
+            <div class="p-6 md:p-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-dark mb-2">用户登录</h2>
+                    <p class="text-gray-500">欢迎回来，请登录您的账户</p>
+                </div>
+                
+                <form id="loginForm" class="space-y-5">
+                    <!-- 用户名输入 -->
+                    <div class="space-y-2">
+                        <label for="username" class="block text-sm font-medium text-gray-700">用户名</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa fa-user text-gray-400"></i>
+                            </div>
+                            <input type="text" id="username" name="username" 
+                                class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:form-input-focus transition-all duration-200"
+                                placeholder="请输入用户名" required>
+                        </div>
+                    </div>
+                    
+                    <!-- 手机号输入 -->
+                    <div class="space-y-2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">手机号</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa fa-phone text-gray-400"></i>
+                            </div>
+                            <input type="tel" id="phone" name="phone" 
+                                class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:form-input-focus transition-all duration-200"
+                                placeholder="请输入手机号" pattern="[0-9]{11}" required>
+                            <div id="phoneError" class="hidden text-error text-sm mt-1 animate-fade-in">
+                                <i class="fa fa-exclamation-circle mr-1"></i>请输入有效的手机号
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 密码输入 -->
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700">密码</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa fa-lock text-gray-400"></i>
+                            </div>
+                            <input type="password" id="password" name="password" 
+                                class="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:form-input-focus transition-all duration-200"
+                                placeholder="请输入密码" required>
+                            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- 密码强度指示器 -->
+                        <div id="passwordStrength" class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full password-strength-0 transition-all duration-300"></div>
+                        </div>
+                        <div id="passwordStrengthText" class="text-xs text-gray-500 mt-1">密码强度: 未输入</div>
+                    </div>
+                    
+                    <!-- 验证码输入 -->
+                    <div class="space-y-2">
+                        <label for="verificationCode" class="block text-sm font-medium text-gray-700">验证码</label>
+                        <div class="flex gap-3">
+                            <div class="relative flex-1">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa fa-shield text-gray-400"></i>
+                                </div>
+                                <input type="text" id="verificationCode" name="verificationCode" 
+                                    class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:form-input-focus transition-all duration-200"
+                                    placeholder="请输入验证码" required>
+                            </div>
+                            <button type="button" id="getVerificationCode" 
+                                class="px-4 py-3 bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-200 whitespace-nowrap">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 记住我和忘记密码 -->
+                    <div class="flex justify-between items-center">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="rememberMe" class="sr-only peer">
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            <span class="ml-2 text-sm font-medium text-gray-700">记住我</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:text-secondary transition-colors duration-200">忘记密码?</a>
+                    </div>
+                    
+                    <!-- 登录按钮 -->
+                    <button type="submit" id="loginButton" 
+                        class="w-full py-3 px-4 bg-primary text-white rounded-lg font-medium shadow-lg shadow-primary/20 hover:bg-secondary hover:shadow-xl hover:shadow-secondary/20 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center">
+                        <i class="fa fa-sign-in-alt mr-2"></i> 登录
+                    </button>
+                    
+                    <!-- 分隔线 -->
+                    <div class="relative flex items-center mt-8">
+                        <div class="flex-grow border-t border-gray-200"></div>
+                        <span class="flex-shrink mx-4 text-sm text-gray-500">或者</span>
+                        <div class="flex-grow border-t border-gray-200"></div>
+                    </div>
+                    
+                    <!-- 社交登录 -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <button type="button" class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            <i class="fa fa-weixin text-green-600 text-xl"></i>
+                        </button>
+                        <button type="button" class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            <i class="fa fa-qq text-blue-500 text-xl"></i>
+                        </button>
+                        <button type="button" class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            <i class="fa fa-weibo text-red-500 text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- 注册链接 -->
+                    <div class="text-center mt-6">
+                        <span class="text-gray-600">还没有账号?</span>
+                        <a href="#" class="text-primary font-medium hover:text-secondary transition-colors duration-200">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- 隐私通知 -->
+    <footer class="container mx-auto px-4 py-6 text-center text-gray-500 text-sm">
+        <p>登录即表示您同意我们的 <a href="#" class="text-primary hover:underline">隐私政策</a> 和 <a href="#" class="text-primary hover:underline">服务条款</a></p>
+        <p class="mt-2">2025 大学生健康管家 All Rights Reserved.</p>
+    </footer>
+
+    <!-- 通知组件 -->
+    <div id="notification" class="fixed top-4 right-4 max-w-sm bg-white rounded-lg shadow-xl p-4 transform translate-x-full transition-transform duration-300 flex items-start z-50">
+        <div id="notificationIcon" class="mr-3 text-xl mt-0.5"></div>
+        <div>
+            <h3 id="notificationTitle" class="font-medium text-sm"></h3>
+            <p id="notificationMessage" class="text-xs text-gray-600 mt-1"></p>
+        </div>
+        <button id="closeNotification" class="ml-auto text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+    <script>
+        // DOM元素
+        const loginForm = document.getElementById('loginForm');
+        const getVerificationCodeButton = document.getElementById('getVerificationCode');
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        const passwordStrengthBar = document.getElementById('passwordStrength').querySelector('div');
+        const passwordStrengthText = document.getElementById('passwordStrengthText');
+        const loginButton = document.getElementById('loginButton');
+        const notification = document.getElementById('notification');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationTitle = document.getElementById('notificationTitle');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const closeNotification = document.getElementById('closeNotification');
+        
+        // 验证码倒计时
+        let countdown = 60;
+        let countdownInterval;
+        
+        // 手机号验证
+        phoneInput.addEventListener('input', function() {
+            const phonePattern = /^1[3-9]\d{9}$/;
+            const phoneError = document.getElementById('phoneError');
+            
+            if (this.value && !phonePattern.test(this.value)) {
+                this.classList.add('border-error');
+                phoneError.classList.remove('hidden');
+            } else {
+                this.classList.remove('border-error');
+                phoneError.classList.add('hidden');
+            }
+        });
+        
+        // 密码强度检测
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            // 密码长度
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            
+            // 密码复杂度
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            // 更新强度指示器
+            passwordStrengthBar.className = `h-full transition-all duration-300 password-strength-${strength}`;
+            
+            // 更新强度文本
+            let strengthText = '弱';
+            let strengthColor = 'text-red-500';
+            
+            if (strength === 2) {
+                strengthText = '中';
+                strengthColor = 'text-yellow-500';
+            } else if (strength === 3) {
+                strengthText = '良好';
+                strengthColor = 'text-blue-500';
+            } else if (strength >= 4) {
+                strengthText = '强';
+                strengthColor = 'text-green-500';
+            }
+            
+            passwordStrengthText.className = `text-xs ${strengthColor} mt-1`;
+            passwordStrengthText.textContent = `密码强度: ${strengthText}`;
+        });
+        
+        // 切换密码可见性
+        togglePasswordButton.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // 切换图标
+            const icon = this.querySelector('i');
+            if (type === 'text') {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        });
+        
+        // 获取验证码
+        getVerificationCodeButton.addEventListener('click', function() {
+            const phonePattern = /^1[3-9]\d{9}$/;
+            
+            if (!phonePattern.test(phoneInput.value)) {
+                showNotification('错误', '请输入有效的手机号', 'error');
+                return;
+            }
+            
+            // 启动倒计时
+            startCountdown();
+            
+            // 模拟发送验证码
+            setTimeout(() => {
+                showNotification('成功', '验证码已发送到您的手机，有效期60秒', 'success');
+            }, 800);
+        });
+        
+        // 开始倒计时
+        function startCountdown() {
+            getVerificationCodeButton.disabled = true;
+            getVerificationCodeButton.textContent = `重新发送(${countdown}s)`;
+            getVerificationCodeButton.classList.add('bg-gray-100', 'text-gray-400', 'border-gray-300');
+            getVerificationCodeButton.classList.remove('hover:bg-primary', 'hover:text-white');
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                getVerificationCodeButton.textContent = `重新发送(${countdown}s)`;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    getVerificationCodeButton.disabled = false;
+                    getVerificationCodeButton.textContent = '获取验证码';
+                    getVerificationCodeButton.classList.remove('bg-gray-100', 'text-gray-400', 'border-gray-300');
+                    getVerificationCodeButton.classList.add('hover:bg-primary', 'hover:text-white');
+                    countdown = 60;
+                }
+            }, 1000);
+        }
+        
+        // 表单提交
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // 验证表单
+            const username = document.getElementById('username').value;
+            const phone = phoneInput.value;
+            const password = passwordInput.value;
+            const verificationCode = document.getElementById('verificationCode').value;
+            
+            if (!username || !phone || !password || !verificationCode) {
+                showNotification('错误', '请填写所有必填字段', 'error');
+                return;
+            }
+            
+            const phonePattern = /^1[3-9]\d{9}$/;
+            if (!phonePattern.test(phone)) {
+                showNotification('错误', '请输入有效的手机号', 'error');
+                return;
+            }
+            
+            // 修改login.html中的setTimeout登录成功回调
+            setTimeout(() => {
+                // 存储登录状态
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+
+                showNotification('成功', '登录成功，正在跳转...', 'success');
+
+                // 恢复按钮状态
+                loginButton.disabled = false;
+                loginButton.innerHTML = '<i class="fa fa-check mr-2"></i> 登录成功';
+
+                // 延迟跳转到主页面
+                setTimeout(() => {
+                    window.location.href = '作品.html';
+                }, 1500);
+            }, 2000);
+        });
+        
+        // 显示通知
+        function showNotification(title, message, type) {
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            // 设置图标和颜色
+            if (type === 'success') {
+                notificationIcon.className = 'fa fa-check-circle text-success mr-3 text-xl mt-0.5';
+                notification.classList.add('border-l-4', 'border-success');
+            } else if (type === 'error') {
+                notificationIcon.className = 'fa fa-exclamation-circle text-error mr-3 text-xl mt-0.5';
+                notification.classList.add('border-l-4', 'border-error');
+            } else if (type === 'warning') {
+                notificationIcon.className = 'fa fa-exclamation-triangle text-yellow-500 mr-3 text-xl mt-0.5';
+                notification.classList.add('border-l-4', 'border-yellow-500');
+            } else if (type === 'info') {
+                notificationIcon.className = 'fa fa-info-circle text-primary mr-3 text-xl mt-0.5';
+                notification.classList.add('border-l-4', 'border-primary');
+            }
+            
+            // 显示通知
+            notification.classList.remove('translate-x-full');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                hideNotification();
+            }, 3000);
+        }
+        
+        // 隐藏通知
+        function hideNotification() {
+            notification.classList.add('translate-x-full');
+            // 移除添加的类
+            notification.classList.remove('border-l-4', 'border-success', 'border-error', 'border-yellow-500', 'border-primary');
+        }
+        
+        // 关闭通知
+        closeNotification.addEventListener('click', hideNotification);
+        
+        // 页面滚动时改变导航栏样式
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('py-2', 'shadow-lg');
+                header.classList.remove('py-4', 'shadow-md');
+            } else {
+                header.classList.add('py-4', 'shadow-md');
+                header.classList.remove('py-2', 'shadow-lg');
+            }
+        });
+    </script>
+</body>
+
+</html>

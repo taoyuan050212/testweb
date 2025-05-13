@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药品智库</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-pink {
+            color: #E91E63;
+        }
+
+        .bg-pink-light {
+            background-color: #FCE4EC;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold primary-pink mb-4 text-center">💊药品智库</h1>
+        <p class="text-gray-700 mb-6 text-center">手动输入药品名称查询有效期和禁忌提醒</p>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold primary-pink mb-4">药品信息查询</h2>
+            <p class="text-gray-600 mb-4">请输入药品名称，我们将为您提供药品的详细信息。</p>
+            <input type="text" id="medicine-name" placeholder="请输入药品名称" class="w-full border border-pink-300 p-2 rounded-md mb-4">
+            <button class="w-full bg-primary-pink text-white p-2 rounded-md hover:bg-pink-700" onclick="searchMedicine()">查询药品</button>
+            <div id="medicine-info" class="mt-4"></div>
+        </div>
+    </div>
+    <script>
+        function searchMedicine() {
+            const medicineName = document.getElementById('medicine-name').value;
+            if (medicineName) {
+                const mockResult = {
+                    name: medicineName,
+                    expirationDate: '2025-12-31',
+                    contraindications: '孕妇禁用，过敏者慎用'
+                };
+                const infoDiv = document.getElementById('medicine-info');
+                infoDiv.innerHTML = `
+                        <p class="text-gray-600">药品名称：${mockResult.name}</p>
+                        <p class="text-gray-600">有效期：${mockResult.expirationDate}</p>
+                        <p class="text-gray-600">禁忌提醒：${mockResult.contraindications}</p>
+                    `;
+            } else {
+                alert('请输入药品名称');
+            }
+        }
+    </script>
+</body>
+</html>    

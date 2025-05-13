@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树洞匿名信</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-green { color: #4CAF50; }
+        .bg-primary-light { background-color: #E8F5E9; }
+        .border-green { border-color: #C8E6C9; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold primary-green mb-4 text-center">树洞匿名信</h1>
+        <p class="text-gray-700 mb-6 text-center">在这里匿名倾诉烦恼，AI 将为你生成暖心回复，保护隐私，无需注册。</p>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold primary-green mb-4">写下你的心事</h2>
+            <form>
+                <textarea rows="6" placeholder="例如：今天考试没考好，心情很低落..." 
+                    class="w-full mt-1 border border-green p-2 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-primary-green"></textarea>
+                <button type="submit" class="w-full bg-primary-green text-white p-2 rounded-md hover:bg-green-700">
+                    提交并获取回复 🤖
+                </button>
+            </form>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-medium primary-green mb-4">AI 暖心回复示例：</h3>
+                <p class="text-gray-700 italic">
+                    "一次考试不代表全部，你已经很棒了！休息一下，明天继续加油吧～"
+                </p>
+            </div>
+        </div>
+
+</body>
+</html>    

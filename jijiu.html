@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>急救知识AR教学</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-pink { color: #E91E63; }
+        .bg-pink-light { background-color: #FCE4EC; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold primary-pink mb-4 text-center">👨‍🏫急救知识AR教学</h1>
+        <p class="text-gray-700 mb-6 text-center">手机扫描人体模型展示CPR操作流程</p>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold primary-pink mb-4">AR教学开始</h2>
+            <p class="text-gray-600 mb-4">请将手机摄像头对准人体模型，即可开始AR教学。</p>
+            <button class="w-full bg-primary-pink text-white p-2 rounded-md hover:bg-pink-700" onclick="startARTeaching()">开始教学</button>
+        </div>
+    </div>
+    <script>
+        function startARTeaching() {
+            alert('正在启动AR教学，请将手机对准人体模型...');
+        }
+    </script>
+</body>
+</html>    

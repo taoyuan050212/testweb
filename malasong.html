@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟校园马拉松</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .primary-orange { color: #ff9800; }
+        .bg-orange-light { background-color: #ffebcd; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col items-center p-8">
+    <div class="max-w-md w-full">
+        <h1 class="text-2xl font-bold primary-orange mb-4 text-center">虚拟校园马拉松</h1>
+        <p class="text-gray-700 mb-6 text-center">微信步数兑换3D地图探索进度，解锁校园隐藏场景！</p>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold primary-orange mb-4">步数兑换规则</h2>
+            <ul class="list-disc pl-6 text-gray-600">
+                <li>1000步 = 1米虚拟里程</li>
+                <li>累计5公里解锁「图书馆3D模型」</li>
+                <li>TOP10玩家可获得专属头像框</li>
+            </ul>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-medium primary-orange mb-4">当前探索进度</h3>
+                <div class="bg-gray-200 h-2 rounded-full">
+                    <div class="bg-primary-orange h-full rounded-full" style="width: 40%;"></div>
+                </div>
+                <p class="text-sm text-gray-600 text-right mt-2">40% 已探索</p>
+            </div>
+        </div>
+</body>
+</html>

@@ -345,7 +345,23 @@ nav ul li a:hover {
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+/* 媒体查询，针对小屏幕设备调整轮播图高度 */
+@media (max-width: 768px) {
+    .swiper {
+        height: 200px; /* 调整手机上的轮播图高度 */
+    }
 
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 32px; /* 调整导航按钮大小 */
+        height: 32px;
+    }
+
+    .swiper-pagination-bullet {
+        width: 8px; /* 调整分页器子弹大小 */
+        height: 8px;
+    }
+}
 main {
     padding: 20px;
 }
@@ -400,22 +416,6 @@ footer:hover {
     background-color: #333;
 }
 
-/* 虚拟助手悬浮按钮 */
-#virtual-assistant {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #8fc5ff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#virtual-assistant:hover {
-    background-color: #82b3e8;
-}
 
 /* 加载提示样式 */
 .loading {
@@ -439,9 +439,11 @@ footer:hover {
 
 /* 新增：智能推荐按钮样式 */
 .recommendation-buttons {
-    margin: 20px 0;
+    margin: 20px auto;
     display: flex;
+    justify-content: center;
     gap: 30px;
+    max-width: 600px;
 }
 
 .recommendation-buttons button {
@@ -458,57 +460,7 @@ footer:hover {
     background-color: #278db882;
 }
 
-/*虚拟助手控制区域样式 */
-.virtual-assistant-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 500px;
-    margin: 20px auto;
-}
 
-.assistant-control {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-#startRecording {
-    background-color: #50aed782;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#startRecording:hover {
-    background-color: #278db882;
-}
-
-#question {
-    border: 1px solid #ddd;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-#question:focus {
-    border-color: #50aed782;
-}
-
-/* 调整提问按钮样式 */
-.virtual-assistant-controls button:last-child {
-    background-color: #50aed782;
-    color: white;
-    border:none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.virtual-assistant-controls button:last-child:hover {
-    background-color:#278db882;
-}
 
 
 /* 头部样式 */
@@ -554,4 +506,37 @@ footer:hover {
 main p a {
     text-decoration: none; /* 去掉下划线 */
     color:#8bc5dd; /* 改成浅蓝色 */
+}
+
+/* 新增：按钮链接样式 */
+.button-link {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button-link button {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* 智能服务按钮样式优化 */
+.service-button {
+    padding: 15px 30px;
+    background-color: #4a89dc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(74, 137, 220, 0.3);
+    margin: 10px auto;
+    display: block;
+}
+
+.service-button:hover {
+    background-color: #3b6fc1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(74, 137, 220, 0.4);
 }

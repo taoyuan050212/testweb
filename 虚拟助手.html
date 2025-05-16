@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟助手 - 健康管家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f7fb;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .chat-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .mic-button {
+            background-color: #4d93e9;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .mic-button:hover {
+            background-color: #3d83d9;
+        }
+
+        .mic-button.recording {
+            background-color: #e95353;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .chat-bubble {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-bubble {
+            background-color: #4d93e9;
+            color: white;
+            margin-left: auto;
+            border-top-right-radius: 4px;
+        }
+
+        .assistant-bubble {
+            background-color: #f0f2f5;
+            color: #333;
+            margin-right: auto;
+            border-top-left-radius: 4px;
+        }
+
+        .ask-btn {
+            background-color: #4d93e9;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .ask-btn:hover {
+            background-color: #3d83d9;
+        }
+
+        .input-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 15px;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: #4d93e9;
+            box-shadow: 0 0 0 2px rgba(77, 147, 233, 0.2);
+        }
+
+        /* 小屏幕适配 */
+        @media (max-width: 640px) {
+            .chat-bubble {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- 标题 -->
+        <h1 class="text-3xl font-bold text-center text-gray-700 mb-6">虚拟助手</h1>
+
+        <!-- 语音输入按钮 -->
+        <div class="mb-6">
+            <button id="voiceBtn" class="mic-button">
+                <i class="fas fa-microphone mr-2"></i> 开始语音输入
+            </button>
+        </div>
+
+        <!-- 文本输入和提交 -->
+        <div class="flex space-x-2 mb-6">
+            <input type="text" id="questionInput" placeholder="有什么问题想问我..." class="input-box flex-1">
+            <button id="askBtn" class="ask-btn">提问</button>
+        </div>
+
+        <!-- 聊天内容区域 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-4 min-h-[400px] max-h-[600px] overflow-y-auto" id="chatContent">
+            <div class="chat-bubble assistant-bubble">
+                有什么可以帮助你的吗？请输入你的问题，或点击上方的语音按钮开始语音输入。
+            </div>
+        </div>
+
+        <!-- 加载指示器 -->
+        <div id="loadingIndicator" class="hidden flex justify-center items-center my-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <span class="ml-2 text-gray-600">正在思考...</span>
+        </div>
+    </div>
+
+    <script>
+        // AI调用函数
+        async function callAI(prompt, systemPrompt = "你是一个健康顾问助手") {
+            try {
+                console.log("API调用:", { prompt, systemPrompt });
+                
+                const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer 69362561-5030-4509-b828-40cc66e2760c'
+                    },
+                    body: JSON.stringify({
+                        "model": "doubao-1-5-thinking-pro-250415",
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": systemPrompt
+                            },
+                            {
+                                "role": "user",
+                                "content": prompt
+                            }
+                        ]
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error("API调用失败:", error);
+                throw error;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM元素
+            const voiceBtn = document.getElementById('voiceBtn');
+            const questionInput = document.getElementById('questionInput');
+            const askBtn = document.getElementById('askBtn');
+            const chatContent = document.getElementById('chatContent');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            // 语音识别初始化
+            let recognition = null;
+            let isRecording = false;
+            
+            // 初始化语音识别
+            function initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    console.log('浏览器不支持语音识别功能');
+                    return false;
+                }
+                
+                try {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    recognition = new SpeechRecognition();
+                    recognition.lang = 'zh-CN';
+                    recognition.continuous = false;
+                    recognition.interimResults = false;
+                    
+                    recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        console.log('语音识别结果: ' + transcript);
+                        questionInput.value = transcript;
+                        handleQuestion();
+                    };
+                    
+                    recognition.onend = () => {
+                        isRecording = false;
+                        voiceBtn.classList.remove('recording');
+                        voiceBtn.innerHTML = '<i class="fas fa-microphone mr-2"></i> 开始语音输入';
+                        console.log('语音识别结束');
+                    };
+                    
+                    recognition.onerror = (event) => {
+                        console.log('语音识别错误: ' + event.error);
+                        isRecording = false;
+                        voiceBtn.classList.remove('recording');
+                        voiceBtn.innerHTML = '<i class="fas fa-microphone mr-2"></i> 开始语音输入';
+                    };
+                    
+                    return true;
+                } catch (error) {
+                    console.log('初始化语音识别失败: ' + error);
+                    return false;
+                }
+            }
+            
+            // 开始语音识别
+            function startSpeechRecognition() {
+                if (!recognition) {
+                    console.log('语音识别未初始化');
+                    return false;
+                }
+                
+                try {
+                    recognition.start();
+                    isRecording = true;
+                    console.log('开始语音识别');
+                    return true;
+                } catch (error) {
+                    console.log('开始语音识别失败: ' + error);
+                    return false;
+                }
+            }
+            
+            // 停止语音识别
+            function stopSpeechRecognition() {
+                if (recognition && isRecording) {
+                    recognition.stop();
+                    isRecording = false;
+                    console.log('停止语音识别');
+                }
+            }
+            
+            // 添加消息气泡到聊天区域
+            function addMessageBubble(message, isUser = false) {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${isUser ? 'user-bubble' : 'assistant-bubble'}`;
+                bubble.textContent = message;
+                chatContent.appendChild(bubble);
+                
+                // 滚动到底部
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+            
+            // 初始化语音识别
+            const speechSupported = initSpeechRecognition();
+            
+            if (!speechSupported) {
+                voiceBtn.disabled = true;
+                voiceBtn.innerHTML = '<i class="fas fa-microphone-slash mr-2"></i> 语音识别不可用';
+                voiceBtn.classList.add('opacity-50');
+                console.log('语音识别不可用');
+            }
+            
+            // 语音输入
+            voiceBtn.addEventListener('click', () => {
+                if (!isRecording) {
+                    voiceBtn.classList.add('recording');
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone-alt mr-2"></i> 正在听，请说话...';
+                    startSpeechRecognition();
+                } else {
+                    voiceBtn.classList.remove('recording');
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone mr-2"></i> 开始语音输入';
+                    stopSpeechRecognition();
+                }
+                console.log('语音按钮点击，状态: ' + (isRecording ? '录音中' : '未录音'));
+            });
+            
+            // 提问按钮
+            askBtn.addEventListener('click', handleQuestion);
+            console.log('提问按钮已绑定点击事件');
+            
+            // 输入框按Enter也能提问
+            questionInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    console.log('按下Enter键');
+                    handleQuestion();
+                }
+            });
+            
+            // 处理用户提问
+            async function handleQuestion() {
+                const question = questionInput.value.trim();
+                console.log('处理问题: ' + question);
+                
+                if (!question) {
+                    alert('请输入您的问题');
+                    console.log('问题为空');
+                    return;
+                }
+                
+                // 添加用户问题到聊天区域
+                addMessageBubble(question, true);
+                
+                // 清空输入框
+                questionInput.value = '';
+                
+                // 显示加载指示器
+                loadingIndicator.classList.remove('hidden');
+                
+                try {
+                    // 使用API调用
+                    const systemPrompt = "你是一个友好的虚拟助手，可以回答用户的各种问题。保持简洁明了的回答风格。";
+                    const answer = await callAI(question, systemPrompt);
+                    
+                    // 添加AI回答到聊天区域
+                    addMessageBubble(answer);
+                    console.log('获取AI回答成功');
+                } catch (error) {
+                    console.log('获取AI回答失败: ' + error);
+                    addMessageBubble('抱歉，无法获取回答，请稍后再试。');
+                } finally {
+                    // 隐藏加载指示器
+                    loadingIndicator.classList.add('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

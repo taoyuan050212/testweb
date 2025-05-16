@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大学生健康管家</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 引入Swiper库的CSS文件，用于实现轮播图功能 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- 页面头部 -->
+    <header>
+        <h1>大学生健康管家</h1>
+        <div class="header-right">
+            <p id="authSection"><a href="login.html">👨登录</a></p>
+        </div>
+    </header>
+    <!-- 添加个人中心模态框 -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>个人中心</h3>
+            <p>用户名：<span id="modalUsername"></span></p>
+            <button onclick="logout()">退出登录</button>
+        </div>
+    </div>
+
+    <!-- 轮播图部分 - 使用Swiper库实现 -->
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <!-- 轮播图幻灯片，使用占位图作为示例 -->
+            <div class="swiper-slide">
+                <img src="1.png" alt="Slide 1">
+            </div>
+            <div class="swiper-slide">
+                <img src="2.png" alt="Slide 2">
+            </div>
+            <div class="swiper-slide">
+                <img src="3.png" alt="Slide 3">
+            </div>
+        </div>
+        <!-- 轮播图分页器 -->
+        <div class="swiper-pagination"></div>
+        <!-- 轮播图导航按钮 -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div>
+
+    <main>
+        <!-- 导航栏部分 -->
+        <section class="news">
+            <nav>
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="zuixinxiaoxi.html">最新消息</a></li>
+                    <li><a href="guanyuwomen.html">关于我们</a></li>
+                    <li><a href="yijianshouji.html">意见收集</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <!-- 体态健康监测站 -->
+        <h2>🏋️‍♀️体态健康监测站</h2>
+        <section class="product">
+            <div>
+                <img src="bangongshi.png" alt="🧘‍♀️办公室病模拟器"><br>
+                <h3>🧘‍♀️办公室病模拟器</h3>
+                <p><a href="jiuzuo.html">⏳ 输入久坐时长</a> </p>
+            </div>
+            <div>
+                <img src="zuozi.png"><br>
+                <h3>🤖AI姿势评估</h3>
+                <p><a href="shexiang.html">📸摄像头实时监测站立/坐姿骨骼线</a> </p>
+            </div>
+        </section>
+
+        <!-- 智慧饮食管理舱 -->
+        <h2>🍱 智慧饮食管理舱</h2>
+        <section class="product">
+            <div>
+                <img src="food.png" alt="📸食堂菜品扫描仪"><br>
+                <h3>📸食堂菜品扫描仪</h3>
+                <P><a href="shiwu.html">🍱拍照识别餐盘食物</a></P>
+                <p><a href="shiwu.html">🧾智能推荐搭配建议 </a> </p>
+            </div>
+            <div>
+                <img src="heian.png">
+                <h3>⚠️黑暗料理警报</h3>
+                <p><a href="heian.html">🍔基于历史数据标记高油盐菜品</a> </p>
+            </div>
+            <div>
+                <img src="water.png">
+                <h3>⏰饮水提醒系统</h3>
+                <P><a href="drinkwater.html">🥛生成喝水提醒 </a></P>
+            </div>
+        </section>
+
+        <!-- 心理能量补给站 -->
+        <h2>🧘心理能量补给站</h2>
+        <section class="product">
+            <div>
+                <img src="yali.png" alt="📊压力值实时仪表盘"><br>
+                <h3>🔍实时压力值测量</h3>
+                <p><a href="yali.html">📕结合课表/消费记录预测压力峰值</a> </p>
+            </div>
+            <div>
+                <img src="huxi.png">
+                <h3>😌5分钟解压舱</h3>
+                <p><a href="huxi.html">🌬️呼吸训练</a></p>
+                <p><a href="huxi.html">🎧ASMR白噪音点播 </a> </p>
+            </div>
+            <div>
+                <img src="shudong.png">
+                <h3>💬树洞匿名信</h3>
+                <p><a href="shudong.html">🤖用AI情感分析生成暖心回复</a> </p>
+            </div>
+        </section>
+
+        <!-- 运动元宇宙竞技场 -->
+        <h2>💪运动元宇宙竞技场</h2>
+        <section class="product">
+            <div>
+                <img src="malasong.png" alt="虚拟校园马拉松"><br>
+                <h3>🏃‍♂️虚拟校园马拉松</h3>
+                <p><a href="malasong.html">🗺️微信步数兑换3D地图探索进度</a> </p>
+            </div>
+            <div>
+                <img src="youxi.png">
+                <h3>🎮人像识别小游戏</h3>
+                <p><a href="game.html">🍉手势识别玩切水果 </a> </p>
+                <p><a href="game.html">🎇 深蹲挑战触发粒子烟花特效  </a> </p>
+            </div>
+            <div>
+                <img src="yundongshejiao.png">
+                <h3>👥运动社交墙</h3>
+                <p><a href="shejiaoqiang.html">🎨生成漫画风运动成绩单</a> </p>
+            </div>
+        </section>
+
+        <!-- 健康数据档案馆 -->
+        <h2> 🩺健康数据档案馆</h2>
+        <section class="product">
+            <div>
+                <img src="shengwuzhong.png" alt="生物钟分析仪"><br>
+                <h3>⏰生物钟分析仪</h3>
+                <p><a href="shengwuzhong.html">📄结合校园网登录时间生成作息报告</a> </p>
+            </div>
+            <div>
+                <img src="jibing.png">
+                <h3>📈疾病预测雷达图</h3>
+                <p><a href="jibingyuce.html">⚠️基于饮食/运动数据预警健康风险</a> </p>
+            </div>
+            <div>
+                <img src="dna.png">
+                <h3>🧬健康DNA可视化</h3>
+                <p><a href="DNA.html">✨用粒子流动画展示身体指标关联性</a> </p>
+            </div>
+        </section>
+
+        <!-- 校园健康服务站 -->
+        <h2>💖校园健康服务站</h2>
+        <section class="product">
+            <div>
+                <img src="zhinengwenzhen.png" alt="智能问诊导航"><br>
+                <h3>🧐智能问诊导航</h3>
+                <p><a href="zhineng.html">📋症状自检树</a> </p>
+            </div>
+            <div>
+                <img src="yao.png">
+                <h3>💊药品智库</h3>
+                <p><a href="yaopin.html"> 🔍扫码识别常备药有效期/禁忌提醒</a> </p>
+            </div>
+            <div>
+                <img src="ar.png">
+                <h3>👨‍🏫急救知识AR教学</h3>
+                <p><a href="jijiu.html">📱手机扫描人体模型展示CPR操作流程</a> </p>
+            </div>
+        </section>
+
+        <!-- 趣味交互设计 -->
+        <h2>🎉趣味交互设计</h2>
+        <section class="product">
+            <div>
+                <img src="chengjiu.png" alt="成就系统"><br>
+                <h3>🏆成就系统</h3>
+                <p><a href="chengjiu.html">🌅连续早睡解锁「晨光征服者」虚拟徽章 </a> </p>
+                <p><a href="chengjiu.html">🍜健康行为积累兑换食堂优惠券 </a> </p>
+            </div>
+            <div>
+                <img src="qinshipk.png">
+                <h3>🏠寝室健康PK</h3>
+                <p><a href="PK.html"> 👫同步室友数据生成战力对比图 </a> </p>
+                <p><a href="PK.html"> ⏰发起「早睡挑战赛」赢虚拟奖杯</a> </p>
+            </div>
+            <div>
+                <img src="amang.png">
+                <h3>🎁健康盲盒</h3>
+                <p><a href="manghe.html"> 🎯完成目标抽取神秘健康贴士</a> </p>
+            </div>
+        </section>
+
+        <!-- 智能推荐部分改为智能服务中心 -->
+        <h2>🤖 智能服务中心</h2>
+        <div class="recommendation-buttons">
+            <!-- 修改：使用单一按钮访问智能助手页面 -->
+            <a href="zhineng_zhuli.html" class="button-link">
+                <button class="service-button">使用智能健康助手</button>
+            </a>
+        </div>
+        <div id="recommendationResult"></div>
+
+        <!-- 加载提示 -->
+        <div class="loading" id="loading">加载中...</div>
+    </main>
+
+    <footer>
+        <p>2025 大学生健康管家 All Rights Reserved.</p>
+    </footer>
+
+    <!-- 引入Swiper库的JavaScript文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script>
+        // 获取DOM元素
+        const loading = document.getElementById('loading');
+        const errorMsg = document.getElementById('errorMsg');
+        const recommendationResult = document.getElementById('recommendationResult');
+        const questionInput = document.getElementById('question');
+        const answerDiv = document.getElementById('answer');
+        const startRecordingButton = document.getElementById('startRecording');
+
+        // 初始化Swiper轮播图
+        const swiper = new Swiper('.swiper', {
+            loop: true, // 循环播放
+            pagination: {
+                el: '.swiper-pagination', // 分页器
+            },
+            navigation: {
+                nextEl: '.swiper-button-next', // 下一页按钮
+                prevEl: '.swiper-button-prev', // 上一页按钮
+            },
+        });
+
+        // 显示加载提示
+        function showLoading() {
+            loading.style.display = 'block';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 2000); // 2秒后自动隐藏
+        }
+
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const authSection = document.getElementById('authSection');
+
+            if (isLoggedIn === 'true') {
+                const username = localStorage.getItem('username');
+                authSection.innerHTML = `<p><a href="#" id="profileLink">👤 ${username}</a></p>`;
+
+                // 添加个人中心点击事件
+                document.getElementById('profileLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showProfileModal();
+                });
+            }
+        });
+
+        // 显示个人中心模态框
+        function showProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const username = localStorage.getItem('username');
+            document.getElementById('modalUsername').textContent = username;
+
+            modal.classList.add('show');
+
+            // 关闭模态框逻辑
+            document.querySelector('.close').onclick = () => {
+                modal.classList.remove('show');
+            }
+
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.classList.remove('show');
+                }
+            }
+        }
+
+        // 退出登录功能
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            location.reload();
+        }
+    </script>
+</html>
